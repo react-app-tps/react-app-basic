@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# React App Basic
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+react-app 基础模板
 
 ## Available Scripts
 
