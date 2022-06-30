@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import websiteReducer from '../features/website/index'
+import websiteReducer from 'features/website/index'
+import accountReducer from 'features/user/accountSlice'
 
 export const store = configureStore({
   reducer: {
     website: websiteReducer,
+    account: accountReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
