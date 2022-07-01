@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import Layout from 'components/layout/Index'
 import { store } from './store/store'
 import GlobalStyle from './GlobalStyle'
+import './mock/index'
 
 function App() {
   return (

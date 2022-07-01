@@ -1,6 +1,22 @@
+/*
+ * @Author: shixuewen friendlysxw@163.com
+ * @Date: 2022-07-01 10:08:56
+ * @LastEditors: shixuewen friendlysxw@163.com
+ * @LastEditTime: 2022-07-01 14:37:56
+ * @Description: axios 封装：凭证，参数序列化
+ */
 import { store } from 'store/store'
-import axios from 'axios'
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from 'axios'
 import qs from 'qs'
+
+export type AxiosCustomHeaderType = {
+  // 当前接口是否需要传递token
+  needToken?: boolean
+  // 当前接口设置的token
+  token?: string
+}
+
+export type AxiosCustomConfigType = AxiosRequestConfig & { headers?: AxiosRequestHeaders & AxiosCustomHeaderType }
 
 // 请求超时的毫秒数(0 表示无超时时间)
 axios.defaults.timeout = 30000
@@ -13,16 +29,15 @@ axios.defaults.withCredentials = true
 
 // 添加请求拦截器
 axios.interceptors.request.use(
-  (config) => {
-    // 凭证相关
-    const isNotToken = (config.headers || {}).isToken === false // 当前请求是否不需要token
-    const isConfigToken = (config.headers || {}).Authorization // 当前请求是否已配置了token
-    if (!isNotToken && !isConfigToken) {
+  (config: AxiosCustomConfigType) => {
+    // 凭证
+    const { needToken, token } = config.headers || {}
+    if (needToken && token) {
       const { token } = store.getState().account // token从store中获取
       if (!config.headers) config.headers = {}
       config.headers.Authorization = token
     }
-    // get请求时params参数开启序列化
+    // get请求，params参数序列化
     if (config.method === 'get') {
       config.paramsSerializer = (params) => qs.stringify(params, { arrayFormat: 'repeat' })
     }
